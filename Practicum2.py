@@ -1,4 +1,6 @@
-# Dit is een nieuwe comment! Welcome to GitHub, ya beautiful bastard
+__author__ = "Dieter Demuynck" + " & " + "Rayan Verheecke"
+"""
+Practicum 2 voor Beginselen van Programmeren
+"""
 
-
-#oke
+# most likely gotta use classes for this one
