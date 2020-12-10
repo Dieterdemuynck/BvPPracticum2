@@ -15,6 +15,13 @@ class Magazijn:
         if producttype not in self._producttypes:
             self._producttypes[producttype] = 0
 
+    def add_producten(self, producttype, aantal):
+        self._producttypes[producttype] += aantal
+
+    def verwerk_bestelling(self, bestelling):
+        if bestelling.get_aantal() > self._producttypes[bestelling.get_producttype()]:
+            bestelling.set_aantal(bestelling.get_aantal - self._producttypes[bestelling.get_producttype()])
+
 
 class ProductType:
     def __init__(self, naam, aankoopprijs, verkoopprijs):
@@ -32,7 +39,7 @@ class ProductType:
         return self._verkoopprijs
 
     def __repr__(self):
-        return self._naam + ": (€" + str(self._aankoopprijs) + " -> €" + str(self._verkoopprijs) + ")"
+        return self._naam + ": (" + str(self._aankoopprijs) + " -> " + str(self._verkoopprijs) + ")"
 
 
 class Klant:
@@ -58,3 +65,9 @@ class Bestelling:
     def __init__(self, aantal, producttype):
         self._aantal = aantal
         self._producttype = producttype
+
+    def get_aantal(self):
+        return self._aantal
+
+    def get_producttype(self):
+        return self._producttype
