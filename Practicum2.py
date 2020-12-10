@@ -57,7 +57,7 @@ class ProductType:
         return self._verkoopprijs
 
     def __repr__(self):
-        return self._naam + "(A" + str(self._aankoopprijs) + " -> V" + str(self._verkoopprijs) + ")"
+        return f"{self._naam}(A{str(self._aankoopprijs)} -> V{str(self._verkoopprijs)})"
 
 
 class Klant:
