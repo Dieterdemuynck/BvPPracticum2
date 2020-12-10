@@ -40,6 +40,35 @@ class Magazijn:
         #     bestelling.set_aantal(bestel_aantal - stock_aantal)
         #     self._producttypes[product_type] = 0
 
+    def verkoopwaarde_product(self, producttype):
+        return self._producttypes[producttype] * producttype.getverkoopPrijs()
+
+    def _aankoopwaarde_product(self, producttype):
+        return self._producttypes[producttype] * producttype.getaankoopPrijs()
+
+    def verkoopwaarde_stock(self):
+        totale_prijs = 0
+        for product, aantal in self._producttypes.items():
+            totale_prijs += aantal * product.getverkoopPrijs()
+        return totale_prijs
+
+    def _aankoopwaarde_stock(self):  # interne functie voor winst te bepalen
+        totale_prijs = 0
+        for product, aantal in self._producttypes.items():
+            totale_prijs += aantal * product.getaankoopPrijs()
+        return totale_prijs
+
+    def winst(self, producttype=None):
+        """
+        Berekent de winst van een bepaald producttype als deze is opgegeven.
+        Als het producttype niet werd opgegeven (is None), berekent de functie de winst van alle producten in voorraad.
+        :param producttype: het producttype waarvan de mogelijke winst wordt berekend
+        :return: de mogelijke winst van alle producten (van het gegeven producttype) in voorraad
+        """
+        if producttype is None:
+            return self.verkoopwaarde_stock() - self._aankoopwaarde_stock()
+        return self.verkoopwaarde_product(producttype) - self._aankoopwaarde_product(producttype)
+
 
 class ProductType:
     def __init__(self, naam, aankoopprijs, verkoopprijs):
@@ -61,10 +90,11 @@ class ProductType:
 
 
 class Klant:
+    # Een mogelijks veiligere manier voor het aanmaken van een ID-nummer
     # from random import randint
     # klant_id = randint(0, 999999)
 
-    # Is er geen betere manier om dit "veiliger" te maken?
+    # Note: Een incrementele manier om een ID-nummer aan te maken is een groot veiligheidsrisico in de echte wereld.
     klant_id = 0
 
     def __init__(self, naam):
