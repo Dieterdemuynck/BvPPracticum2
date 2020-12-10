@@ -24,10 +24,15 @@ class ProductType:
 
     def getNaam(self):
         return self._naam
+
     def getaankoopPrijs(self):
         return self._aankoopprijs
+
     def getverkoopPrijs(self):
         return self._verkoopprijs
+
+    def __repr__(self):
+        return self._naam + ": (€" + str(self._aankoopprijs) + " -> €" + str(self._verkoopprijs) + ")"
 
 
 class Klant:
