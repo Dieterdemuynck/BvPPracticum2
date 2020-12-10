@@ -5,11 +5,18 @@ Practicum 2 voor Beginselen van Programmeren
 
 
 class Magazijn:
-    pass
+    def __init__(self, ):
+
 
 
 class ProductType:
-    pass
+    def __init__(self, naam, aankoopprijs, verkoopprijs):
+        self._naam= naam
+        self._aankoopprijs = aankoopprijs
+        self._verkoopprijs = verkoopprijs
+
+    def getNaam(self):
+
 
 
 class Klant:
