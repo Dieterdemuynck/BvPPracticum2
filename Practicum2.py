@@ -5,14 +5,15 @@ Practicum 2 voor Beginselen van Programmeren
 
 
 class Magazijn:
-    def __init__(self, producttypes, aantal = 0):
-        self._producttypes[producttype] = 0
-        self._aantal[] = aantal
+    def __init__(self):
+        self._producttypes = {}
 
-    def getAantal(self):
-        return self._aantal
     def getProducttypes(self):
         return self._producttypes
+
+    def nieuw_producttype(self, producttype):
+        if producttype not in self._producttypes:
+            self._producttypes[producttype] = 0
 
 
 class ProductType:
@@ -29,12 +30,23 @@ class ProductType:
         return self._verkoopprijs
 
 
-
-
 class Klant:
-    def __init__(self, naam, klant_id):
+    # from random import randint
+    # klant_id = randint(0, 999999)
+
+    # Is er geen betere manier om dit "veiliger" te maken?
+    klant_id = 0
+
+    def __init__(self, naam):
         self._naam = naam
-        self._klant_id = klant_id
+        self._klant_id = Klant.klant_id
+        Klant.klant_id += 1
+
+    def getNaam(self):
+        return self._naam
+
+    def getId(self):
+        return self._klant_id
 
 
 class Bestelling:
