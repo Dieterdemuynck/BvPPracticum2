@@ -19,8 +19,26 @@ class Magazijn:
         self._producttypes[producttype] += aantal
 
     def verwerk_bestelling(self, bestelling):
-        if bestelling.get_aantal() > self._producttypes[bestelling.get_producttype()]:
-            bestelling.set_aantal(bestelling.get_aantal - self._producttypes[bestelling.get_producttype()])
+        product_type = bestelling.get_producttype()
+        bestel_aantal = bestelling.get_aantal()
+        stock_aantal = self._producttypes[product_type]
+
+        # Bestelling kan zonder problemen doorgaan, er is genoeg in voorraad
+        if bestel_aantal <= stock_aantal:
+            self._producttypes[product_type] -= bestel_aantal
+
+        # Als besteld aantal groter dan aantal in voorraad:
+        # -- OPTIE 1 --
+        # Stop de bestelling
+        else:
+            raise ValueError(f"Besteld aantal ({bestel_aantal}) is groter dan aantal in voorraad ({stock_aantal})")
+
+        # -- OPTIE 2 --
+        # Trek van de bestelling het aantal in voorraad af, stock wordt 0
+        #
+        # if bestel_aantal > stock_aantal:
+        #     bestelling.set_aantal(bestel_aantal - stock_aantal)
+        #     self._producttypes[product_type] = 0
 
 
 class ProductType:
@@ -39,7 +57,7 @@ class ProductType:
         return self._verkoopprijs
 
     def __repr__(self):
-        return self._naam + ": (" + str(self._aankoopprijs) + " -> " + str(self._verkoopprijs) + ")"
+        return self._naam + "(A" + str(self._aankoopprijs) + " -> V" + str(self._verkoopprijs) + ")"
 
 
 class Klant:
@@ -62,7 +80,7 @@ class Klant:
 
 
 class Bestelling:
-    def __init__(self, aantal, producttype):
+    def __init__(self, producttype, aantal):
         self._aantal = aantal
         self._producttype = producttype
 
