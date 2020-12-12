@@ -104,7 +104,7 @@ class ProductType:
 
         # naam aanpassen als de lengte te groot is
         if len(self._naam) > naam_len:
-            naam = self._naam[:naam_len - 1] + ".."
+            naam = self._naam[:naam_len - 2] + ".."
         else:
             naam = self._naam
 
@@ -149,3 +149,6 @@ def simulatie():
     De functie simulatie() simuleert het gebruik van de aangemaakte klassen en hun functies.
     """
     pass
+
+
+print(ProductType("Hypergalactische Milky Way 2020", 18.00, 20.95))
