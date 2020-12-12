@@ -79,6 +79,34 @@ class Magazijn:
             return self.verkoopwaarde_stock() - self._aankoopwaarde_stock()
         return self.verkoopwaarde_product(producttype) - self._aankoopwaarde_product(producttype)
 
+    def _info_product(self, producttype):
+        # initialise message var
+        message = ""
+
+        # add info
+        message += f"Producttype: {producttype.getNaam():>20}\n"
+        message += f"Aankoopprijs: {producttype.getaankoopPrijs():>17.2f} €\n"
+        message += f"verkoopprijs: {producttype.getverkoopPrijs():>17.2f} €\n"
+        message += f"Aantal in stock: {self._producttypes[producttype]:>16d}"
+
+        print(message)
+
+    def _info_stock(self):
+        # Uitleg tabel
+        line_1 = f"{'Producttype':<20} | aankoopprijs | verkoopprijs | {'aantal':>6}"
+        seperator = "\n" + "-" * len(line_1)
+        print(line_1 + seperator)
+
+        # Werkelijke info, gebruik de __str__ functie van ProductType
+        for producttype, aantal in self._producttypes.items():
+            print(f"{str(producttype)} | {aantal:>6d}")
+
+    def informatie(self, producttype=None):
+        if producttype is None:
+            self._info_stock()
+        else:
+            self._info_product(producttype)
+
 
 class ProductType:
     def __init__(self, naam, aankoopprijs, verkoopprijs):
@@ -150,5 +178,3 @@ def simulatie():
     """
     pass
 
-
-print(ProductType("Hypergalactische Milky Way 2020", 18.00, 20.95))
