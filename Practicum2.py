@@ -99,7 +99,17 @@ class ProductType:
         return f"{self._naam}:({self._aankoopprijs}, {self._verkoopprijs})"
 
     def __str__(self):
-        return f"{self._naam:16s} | {self._aankoopprijs:8.2f} | {self._verkoopprijs:8.2f}"
+        # constante waarden voor de lay-out van de string
+        naam_len = 20
+
+        # naam aanpassen als de lengte te groot is
+        if len(self._naam) > naam_len:
+            naam = self._naam[:naam_len - 1] + ".."
+        else:
+            naam = self._naam
+
+        # return de (aangepaste) naam, samen met aankoopprijs en verkoopprijs
+        return f"{naam:{naam_len}s} | {self._aankoopprijs:12.2f} | {self._verkoopprijs:12.2f}"
 
 
 class Klant:
@@ -134,8 +144,8 @@ class Bestelling:
         return self._producttype
 
 
-def main():
-    print(str(ProductType("Marsreep", 18.0067, 25.00)))
-
-
-main()
+def simulatie():
+    """
+    De functie simulatie() simuleert het gebruik van de aangemaakte klassen en hun functies.
+    """
+    pass
