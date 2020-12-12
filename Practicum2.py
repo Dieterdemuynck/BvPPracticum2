@@ -96,7 +96,10 @@ class ProductType:
         return self._verkoopprijs
 
     def __repr__(self):
-        return f"{self._naam}(A{str(self._aankoopprijs)} -> V{str(self._verkoopprijs)})"
+        return f"{self._naam}:({self._aankoopprijs}, {self._verkoopprijs})"
+
+    def __str__(self):
+        return f"{self._naam:16s} | {self._aankoopprijs:8.2f} | {self._verkoopprijs:8.2f}"
 
 
 class Klant:
@@ -129,3 +132,10 @@ class Bestelling:
 
     def get_producttype(self):
         return self._producttype
+
+
+def main():
+    print(str(ProductType("Marsreep", 18.0067, 25.00)))
+
+
+main()
