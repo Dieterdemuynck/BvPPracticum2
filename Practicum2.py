@@ -58,6 +58,16 @@ class Magazijn:
             totale_prijs += aantal * product.getaankoopPrijs()
         return totale_prijs
 
+    def verkoopwaarde(self, producttype=None):
+        if producttype is None:
+            return self.verkoopwaarde_stock()
+        return self.verkoopwaarde_product(producttype)
+
+    def _aankoopwaarde(self, producttype=None):
+        if producttype is None:
+            return self._aankoopwaarde_stock()
+        return self._aankoopwaarde_product(producttype)
+
     def winst(self, producttype=None):
         """
         Berekent de winst van een bepaald producttype als deze is opgegeven.
