@@ -158,8 +158,8 @@ class Magazijn:
             print(line)
 
         line_last = "-" * len(line_1) + "\n"
-        line_last += f"Totale verkoopwaarde: {self._verkoopwaarde_stock():>26.2f} €\n"
-        line_last += f"Totale winst: {self._winst_stock():>35.2f} €"
+        line_last += f"Totale verkoopwaarde: {self._verkoopwaarde_stock():>13.2f} €\n"
+        line_last += f"Totale winst: {self._winst_stock():>21.2f} €"
 
         print(line_last)
 
@@ -233,6 +233,9 @@ class Klant:
     def verwerkBestelling(self, bestelling):
         self._bestellingen.remove(bestelling)
 
+    def __repr__(self):
+        return self._naam + f" [{self._klant_id:04d}]"
+
 
 class Bestelling:
     def __init__(self, producttype, aantal):
@@ -282,13 +285,17 @@ def simulatie():
     klant1 = colruyt_magazijn.nieuwKlant("Klant 1")
     klant2 = colruyt_magazijn.nieuwKlant("Klant 2")
 
+    print(colruyt_magazijn._klantenlijst, "\n")
+
     # Stap 7: Klant 1 koopt 10 appels
     print("7. Klant 1 koopt 10 appels")
     bestelling1 = colruyt_magazijn.nieuwBestelling(klant1, appel, 10)
+    colruyt_magazijn.verwerkBestelling(klant1, bestelling1)
 
     # Stap 8: Klant 2 koopt 5 peren
     print("8. Klant 2 koopt 5 peren")
     bestelling2 = colruyt_magazijn.nieuwBestelling(klant2, peer, 5)
+    colruyt_magazijn.verwerkBestelling(klant2, bestelling2)
 
     # Stap 9: De magazijnmanager vraagt de gemaakte winst op appels op
     print("9. Totale winst op appels opvragen")
@@ -300,13 +307,15 @@ def simulatie():
 
     # Stap 11, 12, 13: Klant 1 koopt 20 peren, maak een derde klant aan, klant 3 koopt 5 bananen
     print("11. Klant 1 koopt 20 peren")
-    colruyt_magazijn.nieuwBestelling(klant1, peer, 20)
+    bestelling3 = colruyt_magazijn.nieuwBestelling(klant1, peer, 20)
+    colruyt_magazijn.verwerkBestelling(klant1, bestelling3)
 
     print("12. Aanmaken van een derde klant")
     klant3 = colruyt_magazijn.nieuwKlant("Klant 3")
 
     print("13. Klant 3 bestelt 5 bananen")
-    colruyt_magazijn.nieuwBestelling(klant3, banaan, 5)
+    bestelling4 = colruyt_magazijn.nieuwBestelling(klant3, banaan, 5)
+    colruyt_magazijn.verwerkBestelling(klant3, bestelling4)
 
     # Stap 14: De magazijnmanager vraagt de magazijninfo op
     print("14. Printen van alle info over het magazijn")
