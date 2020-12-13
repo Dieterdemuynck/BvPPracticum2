@@ -169,6 +169,36 @@ class Magazijn:
         else:
             self._info_product(producttype)
 
+    # ================================================================================================================
+    # Data-Analyse Methodes (Opdracht 3)
+    # ================================================================================================================
+
+    def meestWinstgevend(self):
+        """
+        Berekend het meest winstgevend product tot nu toe, en hoeveel winst het heeft opgeleverd
+        :return: een tuple met twee elementen: het producttype en de gemaakte winst
+        """
+        originele_winst = list(self._verkocht.items())[0]
+        for producttype, aantal in list(self._verkocht.items())[1:]:
+            if aantal * self._winst_product(producttype) > originele_winst[1] * self._winst_product(originele_winst[0]):
+                originele_winst = (producttype, aantal)
+
+        return originele_winst[0], self._winst_product(originele_winst[0])
+
+    def meestGespendeerd(self):
+        klant_winst_koppel = (None, 0)
+        for klant in self._klantenlijst:
+            besteld = klant.getVerwerkteBestellingen()
+
+            winst_opgeleverd = 0
+            for bestelling in besteld:
+                winst_opgeleverd += bestelling.bereken_winst()
+
+            if winst_opgeleverd > klant_winst_koppel[1]:
+                klant_winst_koppel = (klant, winst_opgeleverd)
+
+        return klant_winst_koppel
+
 
 class ProductType:
     def __init__(self, naam, aankoopprijs, verkoopprijs):
@@ -213,6 +243,7 @@ class Klant:
     def __init__(self, naam):
         self._naam = naam
         self._bestellingen = []
+        self._verwerkte_bestellingen = []
         self._klant_id = Klant._klant_id
         Klant._klant_id += 1
 
@@ -222,8 +253,11 @@ class Klant:
     def getId(self):
         return self._klant_id
 
-    def getBestelling(self):
+    def getBestellingen(self):
         return self._bestellingen
+
+    def getVerwerkteBestellingen(self):
+        return self._verwerkte_bestellingen
 
     def maak_bestelling(self, producttype, aantal):
         bestelling = Bestelling(producttype, aantal)
@@ -232,6 +266,7 @@ class Klant:
 
     def verwerkBestelling(self, bestelling):
         self._bestellingen.remove(bestelling)
+        self._verwerkte_bestellingen.append(bestelling)
 
     def __repr__(self):
         return self._naam + f" [{self._klant_id:04d}]"
@@ -247,6 +282,9 @@ class Bestelling:
 
     def get_producttype(self):
         return self._producttype
+
+    def bereken_winst(self):
+        return (self._producttype.getverkoopPrijs() - self._producttype.getaankoopPrijs()) * self._aantal
 
 
 def simulatie():
@@ -278,14 +316,10 @@ def simulatie():
     print("5. Verkoopwaarde van de volledige stock opvragen")
     print("De verkoopwaarde van de volledige stock is:", colruyt_magazijn.verkoopwaarde(), "\n")
 
-    print(colruyt_magazijn._in_stock, "\n")
-
     # Stap 6: Maak 2 klanten aan
     print("6. Aanmaken van 2 klanten")
     klant1 = colruyt_magazijn.nieuwKlant("Klant 1")
     klant2 = colruyt_magazijn.nieuwKlant("Klant 2")
-
-    print(colruyt_magazijn._klantenlijst, "\n")
 
     # Stap 7: Klant 1 koopt 10 appels
     print("7. Klant 1 koopt 10 appels")
@@ -320,6 +354,16 @@ def simulatie():
     # Stap 14: De magazijnmanager vraagt de magazijninfo op
     print("14. Printen van alle info over het magazijn")
     colruyt_magazijn.informatie()
+
+    # Stap 15: De magazijnbeheerder vraagt het meest winstgevend producttype op
+    print("15. Meest winstgevend producttype opvragen")
+    producttype, winst = colruyt_magazijn.meestWinstgevend()
+    print(f"Het meest winstgevend product {producttype.getNaam()} heeft {winst:.2f} € opgebracht.")
+
+    # Stap 16: De magazijnbeheerder vraagt de meest winstgevend klant op
+    print("16. Meest winstgevende klant opvragen")
+    klant, winst = colruyt_magazijn.meestGespendeerd()
+    print(f"De meest winstgevende klant {klant.getNaam()} heeft {winst:.2f} € opgebracht.")
 
 
 simulatie()
