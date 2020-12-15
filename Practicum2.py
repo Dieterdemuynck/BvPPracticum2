@@ -178,6 +178,9 @@ class Magazijn:
         Berekend het meest winstgevend product tot nu toe, en hoeveel winst het heeft opgeleverd
         :return: een tuple met twee elementen: het producttype en de gemaakte winst
         """
+        if len(self._verkocht) == 0:
+            return None, 0
+
         originele_winst = list(self._verkocht.items())[0]
         for producttype, aantal in list(self._verkocht.items())[1:]:
             if aantal * self._winst_product(producttype) > originele_winst[1] * self._winst_product(originele_winst[0]):
